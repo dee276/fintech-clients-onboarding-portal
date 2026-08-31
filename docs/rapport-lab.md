@@ -198,3 +198,60 @@ Apres recompilation et redemarrage :
 ### Statut final
 
 Application Spring Boot et premiere vue Vaadin fonctionnelles. Etape terminee et validee.
+
+## Etape 3 - Modele Java des formulaires JSON
+
+**Date :** 31 aout 2026
+
+### Objectif
+
+Representer la structure configurable d'un formulaire sans introduire de logique Vaadin ou de persistance.
+
+### Fichiers ajoutes
+
+```text
+form/model/FormTemplate.java
+form/model/FormSection.java
+form/model/FormField.java
+form/model/VisibilityRule.java
+```
+
+Les quatre types utilisent des `record` Java. Ce choix convient a des objets de configuration immuables dont la responsabilite principale est de transporter les donnees deserialisees depuis JSON.
+
+La structure est hierarchique :
+
+```text
+FormTemplate
+  -> List<FormSection>
+       -> List<FormField>
+            -> VisibilityRule optionnelle
+```
+
+`FormField.type` reste une chaine afin que le moteur de rendu puisse etre etendu progressivement. La valeur attendue d'une regle est representee par `JsonNode`, ce qui preserve son type JSON : texte, nombre ou booleen.
+
+La propriete JSON `equals` est mappee vers `expectedValue` en Java avec `@JsonProperty("equals")`. Le nom Java evite une confusion avec la methode standard `Object.equals`.
+
+### Dependance
+
+Jackson Databind est maintenant une dependance directe du projet :
+
+```xml
+<dependency>
+    <groupId>tools.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+</dependency>
+```
+
+Le projet utilise Jackson 3 et le package `tools.jackson.databind` pour `JsonNode`. Les annotations conservent le package `com.fasterxml.jackson.annotation`.
+
+### Verification
+
+```text
+Compiling 6 source files with release 21
+No tests to run
+BUILD SUCCESS
+```
+
+### Statut
+
+Modele Java termine et compilation validee. Le modele JSON, le service de chargement et le premier test de deserialisation restent a realiser pour terminer le jalon 1.
