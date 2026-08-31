@@ -255,3 +255,58 @@ BUILD SUCCESS
 ### Statut
 
 Modele Java termine et compilation validee. Le modele JSON, le service de chargement et le premier test de deserialisation restent a realiser pour terminer le jalon 1.
+
+## Etape 4 - Chargement et deserialisation du premier formulaire
+
+**Date :** 31 aout 2026
+
+### Modele JSON
+
+Le fichier `src/main/resources/forms/individual-investor.json` definit deux sections et huit champs. Il couvre les types `text`, `date`, `email`, `boolean` et `select`.
+
+Les champs de residence demontrent deux conditions opposees :
+
+```text
+canadianResident = true  -> afficher province
+canadianResident = false -> afficher country et foreignTaxId
+```
+
+La syntaxe a d'abord ete validee avec `ConvertFrom-Json`. Aucun identifiant de champ duplique n'a ete detecte et les valeurs conditionnelles ont conserve le type booleen.
+
+### Service de chargement
+
+`FormTemplateService` recoit l'`ObjectMapper` par injection de dependance. La methode `loadTemplate` transforme un identifiant de formulaire en chemin classpath, ouvre la ressource avec `ClassPathResource`, puis la deserialise en `FormTemplate`.
+
+Le flux est ferme avec un `try-with-resources`. Une erreur de lecture est exposee sous forme d'`IllegalStateException` contenant l'identifiant du formulaire concerne.
+
+### Premier test JUnit
+
+`FormTemplateServiceTest` est un test unitaire pur. Il construit un `JsonMapper` sans lancer Spring Boot, charge le formulaire et verifie :
+
+- l'identifiant et le titre du formulaire;
+- la presence de deux sections;
+- le type et le caractere obligatoire de `firstName`;
+- les options de `province`;
+- la condition booleenne positive de `province`;
+- la condition booleenne negative de `country`.
+
+### Resultat
+
+```text
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+Total time: 12.963 s
+```
+
+## Bilan du jalon 1
+
+Les objectifs du premier jalon sont atteints :
+
+- l'application Spring Boot demarre;
+- Vaadin affiche une vue sur le port local `8082`;
+- le modele Java des formulaires est present;
+- un formulaire JSON est stocke dans les ressources;
+- Jackson deserialise ce formulaire par un service dedie;
+- un test JUnit confirme le comportement.
+
+Le prochain jalon introduira le rendu dynamique des champs Vaadin a partir du `FormTemplate`. Aucune logique de rendu n'a ete ajoutee pendant le jalon 1.

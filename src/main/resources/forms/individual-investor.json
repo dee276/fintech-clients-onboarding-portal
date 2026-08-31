@@ -1,0 +1,79 @@
+{
+  "formId": "individual-investor",
+  "title": "Individual Investor Onboarding",
+  "sections": [
+    {
+      "id": "personal-information",
+      "title": "Personal Information",
+      "fields": [
+        {
+          "id": "firstName",
+          "type": "text",
+          "label": "First name",
+          "required": true
+        },
+        {
+          "id": "lastName",
+          "type": "text",
+          "label": "Last name",
+          "required": true
+        },
+        {
+          "id": "dateOfBirth",
+          "type": "date",
+          "label": "Date of birth",
+          "required": true
+        },
+        {
+          "id": "email",
+          "type": "email",
+          "label": "Email",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "residency",
+      "title": "Residency",
+      "fields": [
+        {
+          "id": "canadianResident",
+          "type": "boolean",
+          "label": "Are you a Canadian resident?",
+          "required": true
+        },
+        {
+          "id": "province",
+          "type": "select",
+          "label": "Province",
+          "required": true,
+          "options": ["Quebec", "Ontario", "British Columbia", "Alberta"],
+          "visibleWhen": {
+            "field": "canadianResident",
+            "equals": true
+          }
+        },
+        {
+          "id": "country",
+          "type": "text",
+          "label": "Country of residence",
+          "required": true,
+          "visibleWhen": {
+            "field": "canadianResident",
+            "equals": false
+          }
+        },
+        {
+          "id": "foreignTaxId",
+          "type": "text",
+          "label": "Foreign tax identification number",
+          "required": true,
+          "visibleWhen": {
+            "field": "canadianResident",
+            "equals": false
+          }
+        }
+      ]
+    }
+  ]
+}
