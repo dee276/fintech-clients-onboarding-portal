@@ -127,3 +127,74 @@ Pour le portfolio, les ecrans seront abordes dans cet ordre : formulaire client 
 ### Statut
 
 Direction visuelle analysee et acceptee comme reference, avec adaptation responsive obligatoire.
+
+## Etape 2 - Generation du squelette Spring Boot et Vaadin
+
+**Date :** 31 aout 2026
+
+### Objectif
+
+Creer une application minimale avec les versions compatibles choisies par Vaadin Start, sans exemple metier ni dependance de base de donnees.
+
+### Configuration generee
+
+| Parametre | Valeur |
+|---|---|
+| Modele Vaadin Start | Empty |
+| Group ID | `com.wealthonboard` |
+| Artifact ID | `wealthonboard` |
+| Java cible | 21 |
+| Vaadin | 25.2.6 |
+| Spring Boot | 4.1.0 |
+| Build | Maven Wrapper |
+
+L'archive generee a ete inspectee dans un dossier temporaire. Son depot `.git` interne a ete exclu afin de conserver l'historique Git deja initialise pour le projet.
+
+### Verification executee
+
+```powershell
+.\mvnw.cmd --version
+.\mvnw.cmd test
+```
+
+### Resultat
+
+```text
+No tests to run.
+BUILD SUCCESS
+Total time: 8.508 s
+```
+
+L'absence de tests est normale pour le squelette vide. La compilation reussie confirme que Maven resout les dependances et que le code genere est compatible avec l'environnement local.
+
+### Statut
+
+Squelette integre et compilation validee.
+
+### Verification du demarrage web
+
+Une vue minimale `MainView` a ete ajoutee avec la route racine `@Route("")`. Le port local par defaut a ete place a `8082`, car le port `8080` etait utilise par d'autres services. La configuration conserve la possibilite de fournir la variable d'environnement `PORT` :
+
+```properties
+server.port=${PORT:8082}
+```
+
+Le premier demarrage affichait la page Vaadin `No views found`. La classe `MainView` existait, mais sa declaration de package etait absente. Elle compilait alors dans le package Java par defaut, en dehors de l'arborescence analysee par Spring Boot.
+
+La correction appliquee est :
+
+```java
+package com.wealthonboard.ui;
+```
+
+Apres recompilation et redemarrage :
+
+- Spring Boot demarre avec succes;
+- Tomcat ecoute sur `http://localhost:8082`;
+- Vaadin detecte la route racine;
+- le navigateur affiche `WealthOnboard` et `Fintech client onboarding portal`;
+- le titre de page est configure par `@PageTitle("WealthOnboard")`.
+
+### Statut final
+
+Application Spring Boot et premiere vue Vaadin fonctionnelles. Etape terminee et validee.
