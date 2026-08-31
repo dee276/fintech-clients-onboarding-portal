@@ -78,5 +78,52 @@ Termine et valide.
 
 | Etape | Commit suggere | Statut |
 |---|---|---|
-| Initialisation et rapport de laboratoire | `docs: initialize project lab report` | A creer |
+| Initialisation et rapport de laboratoire | `docs: initialize project lab report` | Cree (`0d3550f`) |
 
+## Analyse de la direction visuelle
+
+**Date :** 31 aout 2026
+
+### Sources analysees
+
+Cinq maquettes generees avec Figma AI ont ete fournies : tableau de bord d'onboarding, catalogue de modeles, editeur de modele, liste de documents et version mobile.
+
+### Direction retenue
+
+- interface de travail sobre et dense, adaptee aux operations financieres;
+- barre laterale sombre de 216 px sur grand ecran;
+- contenu principal clair avec bordures discretes et rayon maximal de 7 px;
+- Inter pour l'interface et DM Mono pour les identifiants, dates et donnees tabulaires;
+- bleu primaire reserve aux actions et a la navigation active;
+- statuts exprimes par un libelle, une couleur et, lorsque pertinent, une icone;
+- tableaux compacts pour les vues de gestion;
+- animations courtes uniquement pour signaler un changement d'etat ou de contexte.
+
+### Composants Vaadin pressentis
+
+| Besoin | Composant ou approche |
+|---|---|
+| Structure principale | `AppLayout`, `DrawerToggle`, `SideNav` |
+| Cas d'onboarding et documents | `Grid` |
+| Formulaires | composants de champ Vaadin dans des layouts responsifs |
+| Sections et filtres | `Tabs`, `HorizontalLayout`, champs de filtre |
+| Confirmations | `Notification` avec theme adapte |
+| Actions secondaires | `MenuBar` ou boutons avec infobulles |
+| Indicateurs de statut | `Span` theme par classe CSS et texte explicite |
+
+### Risques et corrections necessaires
+
+1. La maquette mobile conserve la barre laterale ouverte et comprime la table. Sur petit ecran, le tiroir devra etre replie par defaut et ouvert temporairement par un bouton.
+2. Une table desktop ne doit pas simplement deborder horizontalement. Les cas d'onboarding devront utiliser une presentation compacte ou masquer les colonnes secondaires selon la largeur.
+3. Les textes et controles sont tres petits dans les maquettes. L'implementation conservera des zones cliquables suffisantes et une taille de texte lisible.
+4. Les actions visibles seulement au survol doivent aussi etre accessibles au clavier et sur ecran tactile.
+5. La couleur seule ne suffira jamais a communiquer un statut ou une anomalie.
+6. Le constructeur visuel de modeles est une fonctionnalite interessante, mais il depasse le premier jalon. Le moteur JSON doit etre fonctionnel avant sa construction.
+
+### Priorisation fonctionnelle
+
+Pour le portfolio, les ecrans seront abordes dans cet ordre : formulaire client dynamique, tableau de bord conseiller, revision d'une soumission, generation et liste des documents, puis eventuellement constructeur visuel de modeles.
+
+### Statut
+
+Direction visuelle analysee et acceptee comme reference, avec adaptation responsive obligatoire.
