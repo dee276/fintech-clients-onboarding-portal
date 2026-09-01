@@ -1,1 +1,62 @@
-/* Add your styles here */
+:root {
+    --onboarding-border: #d9dde5;
+    --onboarding-muted: #5f6877;
+    --onboarding-surface: #ffffff;
+}
+
+html {
+    background: #f6f7f9;
+}
+
+.onboarding-view {
+    box-sizing: border-box;
+    padding: 2.5rem 2rem 4rem;
+}
+
+.onboarding-title {
+    margin: 0;
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+.onboarding-description {
+    margin: 0 0 1rem;
+    color: var(--onboarding-muted);
+}
+
+.dynamic-form {
+    gap: 2rem;
+}
+
+.form-section {
+    gap: 1rem;
+    border-top: 1px solid var(--onboarding-border);
+    padding: 1.5rem 0 0;
+    background: var(--onboarding-surface);
+}
+
+.form-section-title {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.4;
+}
+
+.dynamic-form vaadin-text-field,
+.dynamic-form vaadin-email-field,
+.dynamic-form vaadin-text-area,
+.dynamic-form vaadin-number-field,
+.dynamic-form vaadin-date-picker,
+.dynamic-form vaadin-select {
+    width: 100%;
+    max-width: 36rem;
+}
+
+@media (max-width: 700px) {
+    .onboarding-view {
+        padding: 1.5rem 1rem 3rem;
+    }
+
+    .onboarding-title {
+        font-size: 1.625rem;
+    }
+}

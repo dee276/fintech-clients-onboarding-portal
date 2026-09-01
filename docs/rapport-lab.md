@@ -310,3 +310,71 @@ Les objectifs du premier jalon sont atteints :
 - un test JUnit confirme le comportement.
 
 Le prochain jalon introduira le rendu dynamique des champs Vaadin a partir du `FormTemplate`. Aucune logique de rendu n'a ete ajoutee pendant le jalon 1.
+
+## Jalon 2 - Rendu dynamique Vaadin
+
+**Date :** 1 septembre 2026
+
+### Fabrique de composants
+
+`FieldComponentFactory` centralise la correspondance entre un type JSON et un composant Vaadin :
+
+| Type JSON | Composant Vaadin |
+|---|---|
+| `text` | `TextField` |
+| `textarea` | `TextArea` |
+| `number` | `NumberField` |
+| `email` | `EmailField` |
+| `date` | `DatePicker` |
+| `boolean` | `RadioButtonGroup<Boolean>` |
+| `select` | `Select<String>` |
+
+Chaque composant recoit l'identifiant, le libelle et l'indicateur de champ obligatoire du `FormField`. Les options JSON alimentent le composant `Select`. Un type inconnu produit une `IllegalArgumentException` explicite.
+
+Le type booleen utilise les choix `Yes` et `No` sans valeur initiale. Cette approche permet de distinguer une reponse negative d'une question sans reponse.
+
+### Renderer dynamique
+
+`DynamicFormRenderer` parcourt les sections du `FormTemplate`, cree un conteneur et un titre par section, puis delegue chaque champ a la fabrique. Il ne charge pas le JSON lui-meme et ne contient aucune condition liee au formulaire investisseur.
+
+```text
+FormTemplate
+  -> DynamicFormRenderer
+       -> FieldComponentFactory
+            -> composants Vaadin
+```
+
+`MainView` charge le template `individual-investor` par `FormTemplateService` et transmet le modele au renderer. Le titre de la page provient egalement du JSON.
+
+### Mise en page
+
+Une mise en page de base a ete ajoutee sans reproduire prematurement le dashboard final :
+
+- largeur de lecture limitee a 720 px;
+- champs principaux sur toute la largeur disponible;
+- sections separees par une bordure discrete;
+- espacements et hierarchie typographique coherents;
+- adaptation des marges et du titre sous 700 px.
+
+La page et `styles.css` ont toutes deux repondu avec le statut HTTP `200` sur `http://localhost:8082`. La feuille servie contient les regles responsive et les styles de section attendus.
+
+### Tests
+
+La suite contient maintenant dix tests :
+
+```text
+DynamicFormRendererTest:      1
+FieldComponentFactoryTest:    8
+FormTemplateServiceTest:      1
+Failures:                     0
+Errors:                       0
+BUILD SUCCESS
+```
+
+### Limites intentionnelles
+
+Le renderer affiche encore tous les champs. La collecte des valeurs, les regles de visibilite, la validation et le bouton de soumission appartiennent au jalon 3.
+
+### Statut
+
+Jalon 2 termine et valide.
